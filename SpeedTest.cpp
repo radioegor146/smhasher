@@ -14,9 +14,6 @@
 #include <parallel_hashmap/phmap.h>
 #include <functional>
 
-#define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
-#define ARRAY_END(x) (&(x)[COUNT_OF(x)])
-
 typedef std::unordered_map<std::string, int,
   std::function<size_t (const std::string &key)>> std_hashmap;
 typedef phmap::flat_hash_map<std::string, int,
