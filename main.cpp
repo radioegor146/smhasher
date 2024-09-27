@@ -2007,6 +2007,9 @@ int main ( int argc, const char ** argv )
   setbuf(stdout, NULL); // Unbuffer stdout always
   setbuf(stderr, NULL); // Unbuffer stderr always
 
+  printf("%d\n", nmhash32_broken());
+  return 0;
+
 #if defined(__x86_64__) || defined(_M_X64) || defined(_X86_64_)
   const char * defaulthash = "xxh3";
 #elif defined(HAVE_BIT32)
