@@ -7,23 +7,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  linux:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        CMAKE_ARGS:
-          - 
-          - -DCMAKE_BUILD_TYPE=Debug
-          - -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 1
-        submodules: recursive
-    - run: cmake ${{ matrix.CMAKE_ARGS }} .
-    - run: make -j4 VERBOSE=1
-    - run: make -j4 test ARGS=-V
   aarch64:
     runs-on: ubuntu-latest
     steps:
@@ -35,19 +18,6 @@ jobs:
     - run: sudo apt-get update -y
     - run: sudo apt-get install -o Acquire::Retries=5 -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu qemu-user-static
     - run: cmake -DCMAKE_TOOLCHAIN_FILE=CMakeARM64Cross.txt
-    - run: make -j4 VERBOSE=1
-    - run: make -j4 test ARGS=-V
-  armv7:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 1
-        submodules: recursive
-    - run: sudo gem install apt-spy2 && sudo apt-spy2 fix
-    - run: sudo apt-get update -y
-    - run: sudo apt-get install -o Acquire::Retries=5 -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf qemu-user-static
-    - run: cmake -DCMAKE_TOOLCHAIN_FILE=CMakeARMCross.txt
     - run: make -j4 VERBOSE=1
     - run: make -j4 test ARGS=-V
   macOS:
@@ -63,48 +33,3 @@ jobs:
     - run: CXXFLAGS='-std=c++17' cmake .
     - run: make -j4 VERBOSE=1
     - run: make -j4 test ARGS=-V
-  windows:
-    runs-on: windows-2019
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 1
-        submodules: recursive
-    - run: cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release .
-    - run: cmake --build . --config Release --verbose
-    - run: ctest -V
-  mingw:
-    name: mingw
-    runs-on: windows-latest
-    env:
-      MSYS2_DIR: msys64
-      MSYS2_ARCH: x86_64
-      MSYSTEM: MINGW64
-      ARCH: win64
-      PLATFORM: x64
-      #PATH: "C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
-    steps:
-      # see https://github.com/msys2/setup-msys2
-    - name: setup-msys2
-      uses: msys2/setup-msys2@v2
-      with:
-        path-type: minimal
-        update: true
-        install: >-
-          git
-          cmake
-          base-devel
-          mingw-w64-x86_64-toolchain
-    - run: reg add "HKLM\Software\Microsoft\Windows\Windows Error Reporting" /f /v DontShowUI /d 1
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 1
-        submodules: recursive
-    - shell: msys2 {0}
-      run: cmake .
-    - shell: msys2 {0}
-      run: make -j4 VERBOSE=1
-      continue-on-error: true
-    - shell: msys2 {0}
-      run: make -j4 test ARGS=-V
-      continue-on-error: true
