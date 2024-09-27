@@ -1,0 +1,4 @@
+/mnt/d/smhasher/CMakeFiles/_CMakeLTOTest-C/bin/CMakeFiles/foo.dir
+/mnt/d/smhasher/CMakeFiles/_CMakeLTOTest-C/bin/CMakeFiles/boo.dir
+/mnt/d/smhasher/CMakeFiles/_CMakeLTOTest-C/bin/CMakeFiles/edit_cache.dir
+/mnt/d/smhasher/CMakeFiles/_CMakeLTOTest-C/bin/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 -march=native -DLTO -O3 -DNDEBUG -flto=auto -fno-fat-lto-objects CMakeFiles/SMHasher.dir/main.cpp.o -o SMHasher  libSMHasherSupport.a 
